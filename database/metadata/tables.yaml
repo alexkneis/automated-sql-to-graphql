@@ -1,0 +1,18 @@
+- table:
+    schema: public
+    name: author
+  array_relationships:
+  - name: book
+    using:
+      foreign_key_constraint_on:
+        column: authorid
+        table:
+          schema: public
+          name: book
+- table:
+    schema: public
+    name: book
+  object_relationships:
+  - name: author
+    using:
+      foreign_key_constraint_on: authorid

@@ -1,0 +1,10 @@
+query AuthorsBooks{
+    author{
+      id
+    firstname
+    lastname
+    book{
+      title
+    }
+  }
+}

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=booksdb 
+    volumes:
+      - db-data:/var/lib/postgresql/data:delegated
+  graphql-engine:
+    image: hasura/graphql-engine:v1.3.2.cli-migrations-v2
+    ports:
+    - "8081:8080"
+    depends_on:
+    - "postgres"
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@postgres:5432/booksdb
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+    volumes:
+      - ./database/metadata:/hasura-metadata # add metadata informations to the default metadata import folder to automatially track all tables
+volumes:
+  db-data:

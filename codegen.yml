@@ -1,0 +1,18 @@
+overwrite: true
+schema: 'http://localhost:8081/v1/graphql'
+documents: 'src/graphql/**/*.graphql'
+generates:
+  src/generated/graphql-backend.ts: # Outputs the resolver type-safed
+    plugins:
+      - 'typescript'
+      - 'typescript-resolvers'
+    config:
+      useIndexSignature: true
+  src/generated/graphql-frontend.ts: # Outputs the type definitions for typescript as well as useQuery hooks for all query files
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+  src/generated/schema.graphql:
+    plugins:
+      - 'schema-ast'
